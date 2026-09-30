@@ -30,21 +30,57 @@ entered the notebooks. Claude was a tool in this process and is not an author of
 Responsibility for the code, methods and results rests with the author. The method, its
 limits and its evaluation are reported in the thesis.
 
-## Setup
+## How to run the notebooks: Google Colab
 
-The notebooks need the `sitex` library and a geospatial stack (GDAL, PROJ). Follow the
-[install instructions in the `sitex` repository](https://github.com/ArchiColab/sitex#install),
-which create a conda environment called `sitex`. Then:
+The notebooks are written for **[Google Colab](https://colab.research.google.com/)**. It
+runs in the browser, so nothing needs to be installed and a laptop with limited computing
+power is enough. You only need a Google account and about 1 GB of free space in Google Drive.
 
-```bash
-git clone https://github.com/ArchiColab/sitex-course.git
-cd sitex-course
-conda activate sitex
-jupyter lab
-```
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course)
 
-Run `00-Data-Acquisition` first. It downloads the data for your area of interest, and
-every later notebook reads the files it saves.
+1. **Open a notebook in Colab.** Click the *Open in Colab* badge next to it in the tables
+   below.
+2. **Copy the sample data to your Google Drive** (next section), once.
+3. **Run the first code cell.** It connects Google Drive (Colab asks for your permission)
+   and installs the `sitex` library, which takes a couple of minutes. Then run the
+   notebook from top to bottom.
+
+Where things are saved in your Google Drive:
+
+| Folder in My Drive | Content |
+|---|---|
+| `Colab_Outputs/` | The input data: the sample data you copy, or what the acquisition notebooks download. Every notebook reads from here. |
+| `SiteX_Outputs/` | What the notebooks produce: maps, GeoPackages, CAD files. |
+
+The notebooks also run on your own computer. See the
+[install instructions in the `sitex` repository](https://github.com/ArchiColab/sitex#install)
+for the conda environment. When they detect that they are not in Colab, they read from
+`../data` and write to `../outputs` instead.
+
+## Sample data and homework
+
+Data acquisition takes time: it downloads terrain, satellite imagery, land cover, streets,
+buildings and places for the whole area. To use the workshop time for the analysis, the
+course is split in two:
+
+| When | What | Where |
+|---|---|---|
+| **Homework, before the workshop** | Phase 0: run the data-acquisition notebooks for your own area, or for the workshop area if your group works on it. | `00-Data-*` |
+| **During the workshop** | Phases 1 to 3: process and analyse the data. Everybody starts from the same **sample data** (`Colab_Outputs`) for Pleiku, so nobody waits for a download. | `01-` to `04-` |
+
+**To get the sample data into your Google Drive:**
+
+1. Download the sample data: **[link to be added]** (a zip file of about 60 MB).
+2. Unzip it. You get a folder named `Colab_Outputs`.
+3. Upload that whole folder to the top level of **My Drive**, so that the path is
+   `My Drive/Colab_Outputs/`. Keep the subfolder names (`dem`, `landsat`, `osm`, `overture`
+   and so on); the notebooks look for them by name.
+
+If a notebook stops with "not found in your Google Drive", the folder is in the wrong place
+or incomplete. Check the path in step 3.
+
+The sample data is derived from open datasets and keeps their licences and attribution
+rules (see [Data sources and licences](#data-sources-and-licences)).
 
 ## The logic of the workshop
 
@@ -104,13 +140,15 @@ sitex-course/
 
 ## Phase 0 — Acquire: what data exists?
 
-Run these first. Every later notebook reads the files they download.
+This phase is the **homework** (see [Sample data and homework](#sample-data-and-homework)).
+Every later notebook reads the files it downloads into `Colab_Outputs`. In the workshop you
+start from the sample data instead, so you can skip it there.
 
-| Notebook | What it does | Main output |
-|---|---|---|
-| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (NASADEM, AW3D30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets, and Overture buildings, places, land use and water. | The `data/` folder |
-| [`00-Data-Acquisition_BuildingHeights`](00-Data-Acquisition_BuildingHeights.ipynb) | Downloads building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas, for the same area. | Height data for Building Morphology |
-| [`00-Data-Add_Missing_Streets`](00-Data-Add_Missing_Streets.ipynb) | Adds streets that are missing from OpenStreetMap, from a sketch you draw in QGIS. | Updated street network files |
+| Notebook | What it does | Main output | Colab |
+|---|---|---|---|
+| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (NASADEM, AW3D30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets, and Overture buildings, places, land use and water. | The `Colab_Outputs` folder | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition.ipynb) |
+| [`00-Data-Acquisition_BuildingHeights`](00-Data-Acquisition_BuildingHeights.ipynb) | Downloads building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas, for the same area. | Height data for Building Morphology | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition_BuildingHeights.ipynb) |
+| [`00-Data-Add_Missing_Streets`](00-Data-Add_Missing_Streets.ipynb) | Adds streets that are missing from OpenStreetMap, from a sketch you draw in QGIS. | Updated street network files | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Add_Missing_Streets.ipynb) |
 
 **Pre-workshop only:** [`00- Overture - Activities Classifier`](00-%20Overture%20-%20Activities%20Classifier.ipynb)
 prepares the classification lookup used by `03-NA02-POIs_Gehl`. Participants don't need to
@@ -121,23 +159,23 @@ run it: the finished lookup is part of the workshop data.
 Run in this order. The site is chosen in the last notebook, and you can come back to it
 and choose again.
 
-| Notebook | What it does | Main output |
-|---|---|---|
-| [`01-ARCH-Building_Morphology`](01-ARCH-Building_Morphology.ipynb) | Gives every building footprint one reconciled height, a function class (residential / mixed / industrial / civic) and its ground elevation. City/ward scale, LOD 100–200. | `buildings_enriched.gpkg` for QGIS |
-| [`01-ARCH-DEM_Contour`](01-ARCH-DEM_Contour.ipynb) | Turns the terrain model into contour lines. | Shapefile for QGIS, optional DXF for Rhino/Revit |
-| [`01-SITE-3D_Model`](01-SITE-3D_Model.ipynb) | **You choose the 2 × 2 km site here.** Clips the attributed buildings to the site and exports CAD/BIM-ready geometry: buildings, terrain, land cover, land use, water and contours. LOD 300+. | DXF and OBJ files of the site |
+| Notebook | What it does | Main output | Colab |
+|---|---|---|---|
+| [`01-ARCH-Building_Morphology`](01-ARCH-Building_Morphology.ipynb) | Gives every building footprint one reconciled height, a function class (residential / mixed / industrial / civic) and its ground elevation. City/ward scale, LOD 100–200. | `buildings_enriched.gpkg` for QGIS | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-ARCH-Building_Morphology.ipynb) |
+| [`01-ARCH-DEM_Contour`](01-ARCH-DEM_Contour.ipynb) | Turns the terrain model into contour lines. | Shapefile for QGIS, optional DXF for Rhino/Revit | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-ARCH-DEM_Contour.ipynb) |
+| [`01-SITE-3D_Model`](01-SITE-3D_Model.ipynb) | **You choose the 2 × 2 km site here.** Clips the attributed buildings to the site and exports CAD/BIM-ready geometry: buildings, terrain, land cover, land use, water and contours. LOD 300+. | DXF and OBJ files of the site | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-SITE-3D_Model.ipynb) |
 
 ## Phase 2 — Sense the city: what does it look like from a satellite?
 
 Four independent notebooks. Two give predictions you check on the field trip; two are
 desk-based site analysis.
 
-| Notebook | The question | Use |
-|---|---|---|
-| [`02-ENV-UHI_Analysis`](02-ENV-UHI_Analysis.ipynb) | Which parts of the ward will be hardest to walk through at ten in the morning, and is it the asphalt or the missing trees? | Field trip |
-| [`02-ENV-Urban_Change_Detection`](02-ENV-Urban_Change_Detection.ipynb) | What has this place become, and what did it replace? | Field trip |
-| [`02-ENV-DEM_Terrain`](02-ENV-DEM_Terrain.ipynb) | Where would water go on this site? | Site risk, desk only |
-| [`02-ENV-Flood_Risk_NDWI`](02-ENV-Flood_Risk_NDWI.ipynb) | Which land goes under water every flood season, and what has been built on it? (Case study: Châu Đốc, Mekong Delta) | Site risk, desk only |
+| Notebook | The question | Use | Colab |
+|---|---|---|---|
+| [`02-ENV-UHI_Analysis`](02-ENV-UHI_Analysis.ipynb) | Which parts of the ward will be hardest to walk through at ten in the morning, and is it the asphalt or the missing trees? | Field trip | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/02-ENV-UHI_Analysis.ipynb) |
+| [`02-ENV-Urban_Change_Detection`](02-ENV-Urban_Change_Detection.ipynb) | What has this place become, and what did it replace? | Field trip | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/02-ENV-Urban_Change_Detection.ipynb) |
+| [`02-ENV-DEM_Terrain`](02-ENV-DEM_Terrain.ipynb) | Where would water go on this site? | Site risk, desk only | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/02-ENV-DEM_Terrain.ipynb) |
+| [`02-ENV-Flood_Risk_NDWI`](02-ENV-Flood_Risk_NDWI.ipynb) | Which land goes under water every flood season, and what has been built on it? (Case study: Châu Đốc, Mekong Delta) | Site risk, desk only | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/02-ENV-Flood_Risk_NDWI.ipynb) |
 
 ## Phase 3 — Read the city: how is it used and moved through?
 
@@ -145,15 +183,15 @@ Run in this order. Space Syntax predicts movement from the street network alone,
 show what life is actually there, and the accessibility notebooks measure which services
 you can reach.
 
-| Step | Notebook | The question |
-|---|---|---|
-| **Movement** | [`03-NA01-SpaceSyntax_FieldTripIntro`](03-NA01-SpaceSyntax_FieldTripIntro.ipynb) | A short introduction with three measures (Integration, Choice, Reach), and the field-trip assignment. Start here. |
-| | [`03-NA01-SpaceSyntax`](03-NA01-SpaceSyntax.ipynb) | The full method: how is every street connected to all the others, and what does that predict about movement and centrality? |
-| **Public life** | [`03-NA02-POIs_Gehl`](03-NA02-POIs_Gehl.ipynb) | Where does public life happen? Places sorted into necessary, optional and social activities (Gehl, 2010). |
-| **Accessibility** | [`03-NA03-Amenity_Isochrones`](03-NA03-Amenity_Isochrones.ipynb) | From here, can you walk or cycle to the school, the health station and the market? (The 15-minute city.) |
-| | [`03-NA04-Simple_Isochrone`](03-NA04-Simple_Isochrone.ipynb) | How far can people walk or cycle from one kind of facility? |
-| | [`03-NA05-Simple_Service_Area`](03-NA05-Simple_Service_Area.ipynb) | Which school or health station is "yours", and how many homes does it serve? |
-| **Green** | [`03-NA06-Green_Accessibility`](03-NA06-Green_Accessibility.ipynb) | Where can you sit under a tree within a short walk from home, and are you allowed to? |
+| Step | Notebook | The question | Colab |
+|---|---|---|---|
+| **Movement** | [`03-NA01-SpaceSyntax_FieldTripIntro`](03-NA01-SpaceSyntax_FieldTripIntro.ipynb) | A short introduction with three measures (Integration, Choice, Reach), and the field-trip assignment. Start here. | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA01-SpaceSyntax_FieldTripIntro.ipynb) |
+| | [`03-NA01-SpaceSyntax`](03-NA01-SpaceSyntax.ipynb) | The full method: how is every street connected to all the others, and what does that predict about movement and centrality? | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA01-SpaceSyntax.ipynb) |
+| **Public life** | [`03-NA02-POIs_Gehl`](03-NA02-POIs_Gehl.ipynb) | Where does public life happen? Places sorted into necessary, optional and social activities (Gehl, 2010). | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA02-POIs_Gehl.ipynb) |
+| **Accessibility** | [`03-NA03-Amenity_Isochrones`](03-NA03-Amenity_Isochrones.ipynb) | From here, can you walk or cycle to the school, the health station and the market? (The 15-minute city.) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA03-Amenity_Isochrones.ipynb) |
+| | [`03-NA04-Simple_Isochrone`](03-NA04-Simple_Isochrone.ipynb) | How far can people walk or cycle from one kind of facility? | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA04-Simple_Isochrone.ipynb) |
+| | [`03-NA05-Simple_Service_Area`](03-NA05-Simple_Service_Area.ipynb) | Which school or health station is "yours", and how many homes does it serve? | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA05-Simple_Service_Area.ipynb) |
+| **Green** | [`03-NA06-Green_Accessibility`](03-NA06-Green_Accessibility.ipynb) | Where can you sit under a tree within a short walk from home, and are you allowed to? | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/03-NA06-Green_Accessibility.ipynb) |
 
 ## Phase 4 — Test on the ground: was the model right?
 
@@ -195,12 +233,12 @@ The `04-VIZ` notebooks produce the layouts. They are optional and do no analysis
 draw what the earlier notebooks have already calculated. You can make the same maps in QGIS,
 which is usually more convenient for a layout.
 
-| Notebook | What it draws |
-|---|---|
-| [`04-VIZ-Building_UHI_Overlays`](04-VIZ-Building_UHI_Overlays.ipynb) | Building outlines on top of the heat and change maps |
-| [`04-VIZ-Interactive_Webmap`](04-VIZ-Interactive_Webmap.ipynb) | The five heat and change maps as layers of one web map |
-| [`04-VIZ-POIsHeatmaps`](04-VIZ-POIsHeatmaps.ipynb) | Density heatmaps of the Gehl activities and of third spaces |
-| [`04-VIZ-Workshop_3Layer_Diagram`](04-VIZ-Workshop_3Layer_Diagram.ipynb) | Exploded data stacks next to the 3D site model |
+| Notebook | What it draws | Colab |
+|---|---|---|
+| [`04-VIZ-Building_UHI_Overlays`](04-VIZ-Building_UHI_Overlays.ipynb) | Building outlines on top of the heat and change maps | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-Building_UHI_Overlays.ipynb) |
+| [`04-VIZ-Interactive_Webmap`](04-VIZ-Interactive_Webmap.ipynb) | The five heat and change maps as layers of one web map | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-Interactive_Webmap.ipynb) |
+| [`04-VIZ-POIsHeatmaps`](04-VIZ-POIsHeatmaps.ipynb) | Density heatmaps of the Gehl activities and of third spaces | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-POIsHeatmaps.ipynb) |
+| [`04-VIZ-Workshop_3Layer_Diagram`](04-VIZ-Workshop_3Layer_Diagram.ipynb) | Exploded data stacks next to the 3D site model | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-Workshop_3Layer_Diagram.ipynb) |
 
 ## Data sources and licences
 
