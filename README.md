@@ -73,8 +73,8 @@ the code gives the theme.
 | `01-ARCH-` | Buildings and ground, city/ward scale | 1. Model the city |
 | `01-SITE-` | The 2 × 2 km site, CAD/BIM export | 1. Model the city |
 | `02-ENV-` | Environment from satellite and terrain data | 2. Sense the city |
-| `03-NA01` … `03-NA06` | Network analysis: streets, places, accessibility | 3. Read the city, 5. Design |
-| `04-VIZ-` | Visualization only, optional | 5. Design (layouts) |
+| `03-NA01` … `03-NA06` | Network analysis: streets, places, accessibility | 3. Read the city |
+| `04-VIZ-` | Visualization only, optional | 4. Design (layouts) |
 
 ```
 sitex-course/
