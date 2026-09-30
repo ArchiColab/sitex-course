@@ -161,9 +161,9 @@ and choose again.
 
 | Notebook | What it does | Main output | Colab |
 |---|---|---|---|
-| [`01-ARCH-Building_Morphology`](01-ARCH-Building_Morphology.ipynb) | Gives every building footprint one reconciled height, a function class (residential / mixed / industrial / civic) and its ground elevation. City/ward scale, LOD 100–200. | `buildings_enriched.gpkg` for QGIS | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-ARCH-Building_Morphology.ipynb) |
+| [`01-ARCH-Building_Morphology`](01-ARCH-Building_Morphology.ipynb) | Gives every building footprint one reconciled height, a function class (residential / mixed / industrial / civic) and its ground elevation. City/ward scale, LOD 200. | `buildings_enriched.gpkg` for QGIS | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-ARCH-Building_Morphology.ipynb) |
 | [`01-ARCH-DEM_Contour`](01-ARCH-DEM_Contour.ipynb) | Turns the terrain model into contour lines. | Shapefile for QGIS, optional DXF for Rhino/Revit | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-ARCH-DEM_Contour.ipynb) |
-| [`01-SITE-3D_Model`](01-SITE-3D_Model.ipynb) | **You choose the 2 × 2 km site here.** Clips the attributed buildings to the site and exports CAD/BIM-ready geometry: buildings, terrain, land cover, land use, water and contours. LOD 300+. | DXF and OBJ files of the site | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-SITE-3D_Model.ipynb) |
+| [`01-SITE-3D_Model`](01-SITE-3D_Model.ipynb) | **You choose the 2 × 2 km site here.** Clips the attributed buildings to the site and exports CAD/BIM-ready geometry: buildings, terrain, land cover, land use, water and contours. LOD 200. | DXF and OBJ files of the site | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/01-SITE-3D_Model.ipynb) |
 
 ## Phase 2 — Sense the city: what does it look like from a satellite?
 
