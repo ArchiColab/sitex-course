@@ -45,17 +45,37 @@ power is enough. You only need a Google account and about 1 GB of free space in 
    and installs the `sitex` library, which takes a couple of minutes. Then run the
    notebook from top to bottom.
 
-Where things are saved in your Google Drive:
+## Where the files are: Colab and your own computer
 
-| Folder in My Drive | Content |
-|---|---|
-| `Colab_Outputs/` | The input data: the sample data you copy, or what the acquisition notebooks download. Every notebook reads from here. |
-| `SiteX_Outputs/` | What the notebooks produce: maps, GeoPackages, CAD files. |
+The notebooks keep three kinds of files apart: the **notebooks** (this repository), the
+**input data** (what they download, and the reference tables), and the **results**. The
+data and the results are not part of this repository.
 
-The notebooks also run on your own computer. See the
-[install instructions in the `sitex` repository](https://github.com/ArchiColab/sitex#install)
-for the conda environment. When they detect that they are not in Colab, they read from
-`../data` and write to `../outputs` instead.
+| Kind of file | In Google Drive (Colab) | On your computer | Content |
+|---|---|---|---|
+| Input data | `My Drive/Colab_Outputs/` | `data/` | The sample data you copy, or what the acquisition notebooks download. Every notebook reads from here. |
+| Reference tables | `My Drive/Colab_Outputs/reference/` | `data/reference/` | The Overture place classification files (`overture_place_classification.csv` and `.json`, `overture_category_crosswalk.csv`). The notebooks read them from the data folder. |
+| Results | `My Drive/SiteX_Outputs/` | `outputs/` | What the notebooks produce: maps, GeoPackages, CAD files. |
+
+**On your own computer** the notebooks detect that they are not in Colab and use the paths
+`../data` and `../outputs`. These are relative to the folder that holds the notebook, so
+`data/` and `outputs/` must sit **next to** the folder of this repository, not inside it:
+
+```
+my-project/
+├── sitex-course/     this repository: notebooks, README, reference/
+├── data/             input data, same subfolders as Colab_Outputs (dem, osm, overture, reference, ...)
+└── outputs/          results
+```
+
+If a notebook cannot find a file, check that `data/` and `outputs/` are in the folder above
+the notebooks. The repository also contains its own `reference/` folder with the same
+tables and their edit history (`reference/history/`). That copy is the master version: copy
+its files into `data/reference/` (or `Colab_Outputs/reference/`) when you set up your data,
+because the notebooks do not read the repository copy.
+
+For the conda environment, see the
+[install instructions in the `sitex` repository](https://github.com/ArchiColab/sitex#install).
 
 ## Sample data and homework
 
@@ -91,7 +111,7 @@ proposals back into the same tools.
 
 | Phase | Question | Notebooks |
 |---|---|---|
-| **0. Acquire** | What data exists? | `00-Data-Acquisition`, `00-Data-Acquisition_BuildingHeights` |
+| **0. Acquire** | What data exists? | `00-Data-Acquisition` (building heights are its Section 12, switched off until you turn them on) |
 | **1. Model the city** | What is its form? | Building Morphology → DEM Contour → Site 3D Model. You choose the 2 × 2 km site here and can come back to choose again. |
 | **2. Sense the city** | What does the city look like from a satellite? | UHI, Urban Change *(field trip)*; Terrain and NDWI flood *(site risk, desk only)* |
 | **3. Read the city** | How is it used and moved through? | **Space Syntax** (movement the model predicts) → **POIs / Gehl** (what life is actually there) → **Accessibility** (which services you can reach: NA03–NA05, green NA06) |
@@ -115,7 +135,6 @@ the code gives the theme.
 ```
 sitex-course/
 ├── 00-Data-Acquisition.ipynb
-├── 00-Data-Acquisition_BuildingHeights.ipynb
 ├── 00-Data-Add_Missing_Streets.ipynb
 ├── 00- Overture - Activities Classifier.ipynb   (pre-workshop, not for participants)
 ├── 01-ARCH-Building_Morphology.ipynb
@@ -146,8 +165,7 @@ start from the sample data instead, so you can skip it there.
 
 | Notebook | What it does | Main output | Colab |
 |---|---|---|---|
-| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (NASADEM, AW3D30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets, and Overture buildings, places, land use and water. | The `Colab_Outputs` folder | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition.ipynb) |
-| [`00-Data-Acquisition_BuildingHeights`](00-Data-Acquisition_BuildingHeights.ipynb) | Downloads building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas, for the same area. | Height data for Building Morphology | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition_BuildingHeights.ipynb) |
+| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (Copernicus GLO-30, AW3D30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets (Geofabrik extract), and Overture buildings, places, land use and water. Section 12 adds building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas; it is switched off until you set `RUN_BUILDING_HEIGHTS = True`, and Building Morphology needs its files. | The `Colab_Outputs` folder | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition.ipynb) |
 | [`00-Data-Add_Missing_Streets`](00-Data-Add_Missing_Streets.ipynb) | Adds streets that are missing from OpenStreetMap, from a sketch you draw in QGIS. | Updated street network files | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Add_Missing_Streets.ipynb) |
 
 **Pre-workshop only:** [`00- Overture - Activities Classifier`](00-%20Overture%20-%20Activities%20Classifier.ipynb)
