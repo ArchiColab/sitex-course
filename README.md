@@ -134,6 +134,7 @@ proposals back into the same tools.
 | **3. Read the city** | How is it used and moved through? | **Space Syntax** (movement the model predicts) → **POIs / Gehl** (what life is actually there) → **Accessibility** (which services you can reach: NA03–NA05, green NA06) |
 | **4. Test on the ground** | Was the model right? | The field trip. There is no notebook: the "check on the ground" sections of the notebooks become your worksheet. |
 | **5. Understand → design** | What should change, and does it help? | Scenario tests: a new street (NA01), a new facility or street link (NA04, NA05). The VIZ notebooks produce the layouts. |
+| **6. Integrate** *(optional)* | Where do the results meet? | The results of the earlier notebooks, per hexagon of one shared grid, in one database (`05-INT`); ask it questions in words (`06-INT`). |
 
 ## How the files are named
 
@@ -148,10 +149,11 @@ the code gives the theme.
 | `02-ENV-` | Environment from satellite and terrain data | 2. Sense the city |
 | `03-NA01` … `03-NA06` | Network analysis: streets, places, accessibility | 3. Read the city |
 | `04-VIZ-` | Visualization only, optional | 4. Design (layouts) |
+| `05-INT-`, `06-INT-` | Integration: the results of all notebooks per hexagon, in one database | 6. Integrate |
 
 ```
 sitex-course/
-├── 00-Data-Acquisition.ipynb
+├── 00-Data-Acquisition.ipynb              (also builds the shared hex grid)
 ├── 00-Data-Add_Missing_Streets.ipynb
 ├── 00- Overture - Activities Classifier.ipynb   (pre-workshop, not for participants)
 ├── 01-ARCH-Building_Morphology.ipynb
@@ -171,7 +173,9 @@ sitex-course/
 ├── 04-VIZ-Building_UHI_Overlays.ipynb
 ├── 04-VIZ-Interactive_Webmap.ipynb
 ├── 04-VIZ-POIsHeatmaps.ipynb
-└── 04-VIZ-Workshop_3Layer_Diagram.ipynb
+├── 04-VIZ-Workshop_3Layer_Diagram.ipynb
+├── 05-INT-Hex_Integration.ipynb
+└── 06-INT-Ask_the_Hexagons.ipynb            (optional, needs a language model)
 ```
 
 ## Phase 0 — Acquire: what data exists?
@@ -182,7 +186,7 @@ downloads into `Colab_Outputs`.
 
 | Notebook | What it does | Main output | Colab |
 |---|---|---|---|
-| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (GEDTM30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets (Geofabrik extract), and Overture buildings, places, land use and water. Section 12 adds building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas; it is switched off until you set `RUN_BUILDING_HEIGHTS = True`, and Building Morphology needs its files. | The `Colab_Outputs` folder | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition.ipynb) |
+| [`00-Data-Acquisition`](00-Data-Acquisition.ipynb) | Downloads the open datasets for the area of interest: terrain (GEDTM30), Sentinel-2 and Landsat 8/9 imagery, ESA WorldCover land cover, tree canopy height, OSM streets (Geofabrik extract), and Overture buildings, places, land use and water. Section 12 adds building heights from Google Open Buildings 2.5D Temporal and the Global Building Atlas; it is switched off until you set `RUN_BUILDING_HEIGHTS = True`, and Building Morphology needs its files. Section 3b builds the **shared hexagon grid** (H3, resolution 9, about 330 m across) that the later notebooks summarise their results on, and Section 13 writes a record of the data sources, licences and coordinate systems. | The `Colab_Outputs` folder, the hexagon grid, the data-sources record | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Acquisition.ipynb) |
 | [`00-Data-Add_Missing_Streets`](00-Data-Add_Missing_Streets.ipynb) | Adds streets that are missing from OpenStreetMap, from a sketch you draw in QGIS. | Updated street network files | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/00-Data-Add_Missing_Streets.ipynb) |
 
 **Pre-workshop only:** [`00- Overture - Activities Classifier`](00-%20Overture%20-%20Activities%20Classifier.ipynb)
@@ -275,6 +279,35 @@ which is usually more convenient for a layout.
 | [`04-VIZ-POIsHeatmaps`](04-VIZ-POIsHeatmaps.ipynb) | Density heatmaps of the Gehl activities and of third spaces | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-POIsHeatmaps.ipynb) |
 | [`04-VIZ-Workshop_3Layer_Diagram`](04-VIZ-Workshop_3Layer_Diagram.ipynb) | Exploded data stacks next to the 3D site model | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/04-VIZ-Workshop_3Layer_Diagram.ipynb) |
 
+## Phase 6 — Integrate: where do the results meet?
+
+Optional, and not part of the field trip. Each notebook answers one question and draws one
+map. These two put the answers side by side, one row per hexagon, so you can screen the ward
+for places worth walking to. The hexagon grid is built in `00-Data-Acquisition` (Section 3b).
+Five notebooks end with an *Export for interpretation* step that saves their results per
+hexagon, with a legend that explains every column and its limits:
+
+| Notebook | Table it writes |
+|---|---|
+| `01-ARCH-Building_Morphology` | `hex_morphology` (and `buildings`, the footprints) |
+| `02-ENV-UHI_Analysis` | `hex_uhi`: land surface temperature |
+| `03-NA01-SpaceSyntax` | `hex_spacesyntax`: the space syntax measures of the streets |
+| `03-NA03-Amenity_Isochrones` | `hex_amenities`: walking time to services |
+| `03-NA06-Green_Accessibility` | `hex_green`: walking time to public green |
+
+Run the notebooks you want first. A table that is missing is skipped, and you can build the
+database again later.
+
+| Notebook | What it does | Main output | Colab |
+|---|---|---|---|
+| [`05-INT-Hex_Integration`](05-INT-Hex_Integration.ipynb) | Reads the hexagon tables (Parquet files) and the legends, stores them in one DuckDB database, checks the numbers against the units, and asks it questions with SQL. Example: which hexagons are hot and have no public green within 15 minutes' walk? Ends with a field check from the hexagon to the street. | `{slug}_hex.duckdb`, the database, and `{slug}_hex_grid.parquet`, the hexagons | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/05-INT-Hex_Integration.ipynb) |
+| [`06-INT-Ask_the_Hexagons`](06-INT-Ask_the_Hexagons.ipynb) | **Optional.** Ask the database in plain words. A language model writes one SQL query, DuckDB runs it, and the model explains the result. The model never calculates, and every query is shown before the result. You choose the model: a free Gemini key, an open model on the Colab GPU, or a chat window you copy and paste into. This is a trial, not a method: check the query every time. | `{slug}_ask_log.csv`, a log of every question | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ArchiColab/sitex-course/blob/main/06-INT-Ask_the_Hexagons.ipynb) |
+
+**Without Colab:** [**sitex-explore**](https://github.com/ArchiColab/sitex-explore) is a web
+page that does the same as `06-INT` in the browser, in English and Vietnamese. You load the
+hexagon tables, paste your own AI key, and ask in words. Nothing is uploaded to a server.
+[Open the page](https://archicolab.github.io/sitex-explore/).
+
 ## Data sources and licences
 
 The MIT licence of this repository covers the **notebooks only**. The notebooks download
@@ -293,8 +326,7 @@ Notebooks: MIT, see [LICENSE](LICENSE).
 If you use these notebooks, please cite the thesis they belong to:
 
 > Nguyen, C. (2026). *SITEX: An AI-Assisted Notebook Library for Computational Site
-> Analysis in Data-Scarce Contexts: A Design-Based Research Study in Vietnam*. Master's
-> thesis, Metropolia University of Applied Sciences, Computing in Construction.
+> Analysis in Data-Scarce Contexts*. Master's thesis, Metropolia University of Applied Sciences, Computing in Construction.
 
 ## References
 
