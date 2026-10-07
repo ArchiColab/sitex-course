@@ -11,24 +11,27 @@ The library holds the code; this repository holds the notebooks that teach with 
 
 ## Context of this work
 
-These notebooks were developed by Chau Nguyen as part of a master's thesis at Metropolia
-University of Applied Sciences, in the Computing in Construction programme. Together with
-the `sitex` library they form the experimental case of the thesis: an **agentic system
-for spatial analysis**.
+These notebooks were developed by Chau Nguyen as part of the master's thesis *SITEX: An
+AI-Assisted Notebook Library for Computational Site Analysis in Data-Scarce Contexts*, at
+Metropolia University of Applied Sciences, in the Computing in Construction programme. The
+thesis is a design-based research study in Vietnam. It asks how an AI-assisted,
+notebook-based library can support architecture students and practitioners in
+computational site analysis under data scarcity. Together with the `sitex` library, this
+course is the artefact that the thesis designs, tests and evaluates.
 
-### Development approach: an agentic system with a human in the loop
+### Development approach: AI-assisted, with a human in the loop
 
-In this thesis, an *agentic system* is a software system in which a large language model
-is given a goal and a set of tools (here: reading and editing files, running Python and
-GIS code) and decides its own next steps in a loop of acting, observing the result and
-adjusting, instead of answering one prompt at a time.
+Agentic AI systems range from a chat assistant that answers one prompt at a time to
+software in which a large language model is given a goal and tools (here: reading and
+editing files, running Python and GIS code) and decides its own next steps. The
+development of this library sits at the low-agency end of that range.
 
-The agent used here was Claude Code (Anthropic). It worked with a human in the loop: the
-author defined the research questions, the workshop design, the analytical methods and
-the data sources, reviewed and ran the agent's output, corrected it, and decided what
-entered the notebooks. Claude was a tool in this process and is not an author of the work.
-Responsibility for the code, methods and results rests with the author. The method, its
-limits and its evaluation are reported in the thesis.
+The AI tool used was Claude Code (Anthropic). The author defined the research questions,
+the analytical methods and the data sources, reviewed and ran the AI's output, corrected
+it, and decided what entered the notebooks. Claude was a tool in this process and is not
+an author of the work. Responsibility for the code, methods and results rests with the
+author. The thesis compares this human-in-the-loop way of working with agentic execution on
+the same batch tests, and reports the method, its limits and its evaluation.
 
 ## How to run the notebooks: Google Colab
 
@@ -40,7 +43,7 @@ power is enough. You only need a Google account and about 1 GB of free space in 
 
 1. **Open a notebook in Colab.** Click the *Open in Colab* badge next to it in the tables
    below.
-2. **Copy the sample data to your Google Drive** (next section), once.
+2. **Copy the reference tables to your Google Drive** (see *Where the files are*), once.
 3. **Run the first code cell.** It connects Google Drive (Colab asks for your permission)
    and installs the `sitex` library, which takes a couple of minutes. Then run the
    notebook from top to bottom.
@@ -53,7 +56,7 @@ data and the results are not part of this repository.
 
 | Kind of file | In Google Drive (Colab) | On your computer | Content |
 |---|---|---|---|
-| Input data | `My Drive/Colab_Outputs/` | `data/` | The sample data you copy, or what the acquisition notebooks download. Every notebook reads from here. |
+| Input data | `My Drive/Colab_Outputs/` | `data/` | What the acquisition notebooks download. Every notebook reads from here. |
 | Reference tables | `My Drive/Colab_Outputs/reference/` | `data/reference/` | The Overture place classification files (`overture_place_classification.csv` and `.json`, `overture_category_crosswalk.csv`). The notebooks read them from the data folder. |
 | Results | `My Drive/SiteX_Outputs/` | `outputs/` | What the notebooks produce: maps, GeoPackages, CAD files. |
 
@@ -77,30 +80,44 @@ because the notebooks do not read the repository copy.
 For the conda environment, see the
 [install instructions in the `sitex` repository](https://github.com/ArchiColab/sitex#install).
 
-## Sample data and homework
+## Example places and data
 
-Data acquisition takes time: it downloads terrain, satellite imagery, land cover, streets,
-buildings and places for the whole area. To use the workshop time for the analysis, the
-course is split in two:
+Data acquisition has no sample data to copy. Everybody runs `00-Data-Acquisition` for an
+**example place** (or for their own area) and builds their own `data/` folder. The only
+files you need before you start are the **reference tables** (`reference/`, copied to
+`data/reference/`, see above). All the open datasets are streamed or downloaded from their
+providers when you run the notebook (streets from one Geofabrik country file of about 330 MB).
 
-| When | What | Where |
-|---|---|---|
-| **Homework, before the workshop** | Phase 0: run the data-acquisition notebooks for your own area, or for the workshop area if your group works on it. | `00-Data-*` |
-| **During the workshop** | Phases 1 to 3: process and analyse the data. Everybody starts from the same **sample data** (`Colab_Outputs`) for Pleiku, so nobody waits for a download. | `01-` to `04-` |
+The example places are small wards with a compact street network, so that the street and
+place steps run in about a minute (measured for these two steps only, in a test run on a
+laptop; the imagery, terrain and building downloads were not timed):
 
-**To get the sample data into your Google Drive:**
+| Place | OSM ID | Area | Streets | Places in Overture | Why this one |
+|---|---|---|---|---|---|
+| Phường Bình Quới, Ho Chi Minh City | `R19260957` | 6.4 km² | 125 km | about 1,000 | The smallest street network: a river peninsula with green and water. Few places are tagged in OSM, so Overture matters most here. |
+| Lê Chân, Hải Phòng | `R19262156` | 5.6 km² | 312 km | about 5,700 | Dense, well-mapped ward: many places for the POI, Gehl and accessibility notebooks. |
+| Phường Châu Đốc, An Giang | `R13836928` | 40.7 km² | 290 km | about 1,500 | Flat Mekong delta town, the place of the flood notebook. Long Xuyên (`R13566853`, 440 km of streets, about 4,500 places) is a larger alternative. |
 
-1. Download the sample data: **[link to be added]** (a zip file of about 60 MB).
-2. Unzip it. You get a folder named `Colab_Outputs`.
-3. Upload that whole folder to the top level of **My Drive**, so that the path is
-   `My Drive/Colab_Outputs/`. Keep the subfolder names (`dem`, `landsat`, `osm`, `overture`
-   and so on); the notebooks look for them by name.
+Give the OSM ID as `PLACE` in Section 3 of `00-Data-Acquisition` (a name search can match
+several boundaries). The choice is still open: these three were picked from a test on 38
+Vietnamese places, and the full run of every notebook on them has not been done yet.
+Pleiku, the case the notebooks were built on, works the same way but is a bigger and
+sparser ward.
 
-If a notebook stops with "not found in your Google Drive", the folder is in the wrong place
-or incomplete. Check the path in step 3.
+**What you need:**
 
-The sample data is derived from open datasets and keeps their licences and attribution
-rules (see [Data sources and licences](#data-sources-and-licences)).
+1. `data/reference/`: the files from the `reference/` folder of this repository.
+2. A free account on the [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/)
+   for the Sentinel-2 step (Section 5; the first run opens a browser tab for the login).
+   All other sources need no account or key. Without Sentinel-2, the Urban Change Detection
+   notebook cannot run.
+3. About 1 GB of free space in Google Drive (Colab) or on your disk.
+
+**The VIZ notebooks** (`04-VIZ-`) are optional samples and are not run in the workshop. They
+read the results of the earlier notebooks, so for your own place they work after you have run
+those. Set `PLACE` and `SLUG` at the top of each to the values you used in `00-Data-Acquisition`. If you only want to open them, a Pleiku data set can be provided: **[to be decided]**.
+The data and the licences of the downloaded datasets are described under
+[Data sources and licences](#data-sources-and-licences).
 
 ## The logic of the workshop
 
@@ -159,9 +176,9 @@ sitex-course/
 
 ## Phase 0 — Acquire: what data exists?
 
-This phase is the **homework** (see [Sample data and homework](#sample-data-and-homework)).
-Every later notebook reads the files it downloads into `Colab_Outputs`. In the workshop you
-start from the sample data instead, so you can skip it there.
+Everybody runs this phase first, for an example place or their own area (see
+[Example places and data](#example-places-and-data)). Every later notebook reads the files it
+downloads into `Colab_Outputs`.
 
 | Notebook | What it does | Main output | Colab |
 |---|---|---|---|
@@ -275,5 +292,12 @@ Notebooks: MIT, see [LICENSE](LICENSE).
 
 If you use these notebooks, please cite the thesis they belong to:
 
-> Nguyen, C. (2026). *[Thesis title]*. Master's thesis, Metropolia University of Applied
-> Sciences, Computing in Construction.
+> Nguyen, C. (2026). *SITEX: An AI-Assisted Notebook Library for Computational Site
+> Analysis in Data-Scarce Contexts: A Design-Based Research Study in Vietnam*. Master's
+> thesis, Metropolia University of Applied Sciences, Computing in Construction.
+
+## References
+
+Ho, Y.-F., Grohmann, C. H., Lindsay, J., Reuter, H. I., Parente, L., Witjes, M., & Hengl, T.
+(2025). GEDTM30: Global ensemble digital terrain model at 30 m and derived multiscale
+terrain variables. *PeerJ*, *13*, e19673. https://doi.org/10.7717/peerj.19673
